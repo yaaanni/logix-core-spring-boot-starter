@@ -1,0 +1,1 @@
+# logix-core-spring-boot-starter
