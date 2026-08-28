@@ -56,7 +56,7 @@ tasks.named('sonar') {
 }
 
 group = 'io.github.yaaanni'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.7-SNAPSHOT'
 description = 'logix-core-spring-boot-starter'
 
 java {
@@ -71,6 +71,7 @@ repositories {
 
 dependencies {
     api 'org.springframework.boot:spring-boot-starter-security-oauth2-resource-server'
+    api 'org.springframework.boot:spring-boot-starter-oauth2-client'
     api 'org.springframework.boot:spring-boot-starter-webmvc'
     api 'org.springframework.boot:spring-boot-starter-actuator'
     api 'org.springframework.boot:spring-boot-starter-opentelemetry'
@@ -85,6 +86,11 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-security-oauth2-resource-server-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    compileOnly 'org.projectlombok:lombok'
+
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 }
 
 tasks.named('test') {
@@ -105,17 +111,25 @@ publishing {
             from components.java
         }
     }
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/yaaanni/logix-core-spring-boot-starter")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
-    }
 }
+
+//publishing {
+//    publications {
+//        mavenJava(MavenPublication) {
+//            from components.java
+//        }
+//    }
+//    repositories {
+//        maven {
+//            name = "GitHubPackages"
+//            url = uri("https://maven.pkg.github.com/yaaanni/logix-core-spring-boot-starter")
+//            credentials {
+//                username = System.getenv("GITHUB_ACTOR")
+//                password = System.getenv("GITHUB_TOKEN")
+//            }
+//        }
+//    }
+//}
 
 tasks.register('installGitHooks', Exec) {
     commandLine 'sh', '-c', 'chmod +x .githooks/pre-commit 2>/dev/null || true; git config core.hooksPath .githooks'
